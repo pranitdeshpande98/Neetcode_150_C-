@@ -1,0 +1,50 @@
+class Solution {
+public:
+    bool isAnagram(string s, string t) {
+
+// First Approach
+        if(s.length() != t.length()) 
+            return false;
+        // Sort both strings
+        sort(s.begin(), s.end());
+        sort(t.begin(), t.end());
+        
+        // Compare sorted strings
+        return s == t;
+
+
+// Second Approach
+       unordered_map<char, int> s_freq;
+       unordered_map<char, int> t_freq;
+
+       for(int i = 0 ; i < s.size(); i++){
+        s_freq[s[i]]++;
+        t_freq[t[i]]++;
+       }
+
+       for(int i = 0; i < s_freq.size(); i++){
+        if(s_freq[i] != t_freq[i]) return false;
+       }
+       return true;
+
+// Third Approach
+       if(s.size() != t.size()){
+        return false;
+       }
+
+       int count[26] = {0};
+       for(int i = 0 ; i< s.size(); i++){
+         count[s[i] - 'a']++;
+       }
+
+       for(int i = 0 ; i < t.size(); i++){
+        count[t[i] - 'a']--;
+       }
+
+       for(int i = 0 ; i < 26; i++){
+        if(count[i] != 0) return false;
+       }
+       return true;
+
+    }
+};
