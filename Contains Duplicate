@@ -1,0 +1,26 @@
+class Solution {
+public:
+    bool containsDuplicate(vector<int>& nums) {
+
+// First Approach
+        unordered_set<int> mp;
+        for(auto &num: nums){
+            if(mp.count(num) > 0) return true;
+            mp.insert(num);
+        }
+        return false;
+
+
+// Second Approach
+
+        unordered_map<int, int> mp_freq;
+        for(int i = 0; i < nums.size(); i++){
+             mp_freq[nums[i]]++;
+        }
+
+        for(auto &it: mp_freq){
+            if(it.second > 1) return true;
+        }
+        return false;
+    }
+};
