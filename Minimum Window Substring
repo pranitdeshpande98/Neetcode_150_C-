@@ -1,0 +1,37 @@
+class Solution {
+public:
+    string minWindow(string s, string t) {
+        int n = s.length();
+
+        map<char, int> mp;
+        for(char &ch: t){
+            mp[ch]++;
+        }
+
+        int requiredcount = t.length();
+        int i =0;
+        int j =0;
+        int minstart = 0;
+        int minwindow = INT_MAX;
+
+        while(j < n){
+            char ch_j = s[j];
+            if(mp[ch_j] > 0) requiredcount--;
+            mp[ch_j]--;
+
+            while(requiredcount == 0){
+                if(minwindow > j-i+1){
+                    minwindow = j-i+1;
+                    minstart = i;
+                }
+
+                char ch_i = s[i];
+                mp[ch_i]++;
+                if(mp[ch_i] > 0) requiredcount++;
+                i++;
+            }
+            j++;
+        }
+        return minwindow == INT_MAX ? "":s.substr(minstart, minwindow);
+    }
+};
