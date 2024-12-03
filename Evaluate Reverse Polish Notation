@@ -1,1 +1,30 @@
+#include <string>
+class Solution {
+public:
+    int evalRPN(vector<string>& tokens) {
+        stack<int> numbers;
+
+        for(const string &token: tokens){
+            if(token == "+" || token == "-" || token == "*" || token == "/"){
+                int b = numbers.top();  // Second operand (right)
+                numbers.pop();
+                int a = numbers.top();  // First operand (left)
+                numbers.pop();
+
+                if(token == "+"){
+                    numbers.push(a+b);
+                } else if (token == "-"){
+                    numbers.push(a-b);
+                } else if (token == "*"){
+                    numbers.push(a*b);
+                } else{
+                    numbers.push(a/b);
+                }
+            } else {
+                numbers.push(stoi(token));
+            }
+        }
+        return numbers.top();
+    }
+};
 
