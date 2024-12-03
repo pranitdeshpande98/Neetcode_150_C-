@@ -1,0 +1,28 @@
+class Solution {
+public:
+    void helper(int n, int opencount, int closecount, string &currentpath, vector<string> &result){
+        if(opencount == closecount & closecount == n){
+            result.push_back(currentpath);
+            return;
+        }
+
+        if(opencount < n){
+            currentpath += '(';
+            helper(n, opencount+1, closecount, currentpath, result);
+            currentpath.pop_back();
+        }
+
+        if(closecount < opencount){
+            currentpath += ')';
+            helper(n, opencount, closecount+1, currentpath, result);
+            currentpath.pop_back();
+        }
+
+    }
+    vector<string> generateParenthesis(int n) {
+        vector<string> result;
+        string currentpath;
+        helper(n, 0, 0, currentpath, result); // length, opencount, closecount, current string and ans vector by reference
+        return result;
+    }
+};
