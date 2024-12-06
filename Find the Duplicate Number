@@ -1,0 +1,11 @@
+class Solution {
+public:
+    int findDuplicate(vector<int>& nums) {
+        unordered_map<int, int> mp_freq;
+        for(auto &num: nums){
+            if(mp_freq.find(num) != mp_freq.end()) return num;
+            mp_freq[num]++;
+        }
+        return -1;
+    }
+};
