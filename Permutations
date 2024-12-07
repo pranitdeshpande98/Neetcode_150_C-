@@ -1,0 +1,53 @@
+// Apprach 1
+
+class Solution {
+public:
+    vector<vector<int>> result;
+
+    void solve(vector<int> &nums, vector<int> &temp, int freq[]){
+        if(temp.size() == nums.size()){
+            result.push_back(temp);
+            return;
+        }
+        for(int i = 0 ; i < nums.size(); i++){
+            if(!freq[i]){
+                temp.push_back(nums[i]);
+                freq[i] = 1;
+                solve(nums, temp, freq);
+                temp.pop_back();
+                freq[i] = 0;
+            }
+        }
+    }
+    vector<vector<int>> permute(vector<int>& nums) {
+        vector<int> temp;
+        int freq[nums.size()] = {0};
+        solve(nums, temp, freq);
+        return result;
+    }
+};
+
+
+// Approach 2
+class Solution {
+public:
+    vector<vector<int>> result;
+
+    void solve(int idx, vector<int> &nums){
+        if(idx == nums.size()){
+            result.push_back(nums);
+            return;
+        }
+
+        for(int i = idx; i < nums.size(); i++){
+            swap(nums[i], nums[idx]);
+            solve(idx+1, nums);
+            swap(nums[i], nums[idx]);
+        }
+    }
+    vector<vector<int>> permute(vector<int>& nums) {
+      
+        solve(0, nums);
+        return result;
+    }
+};
