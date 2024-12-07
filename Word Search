@@ -1,0 +1,43 @@
+#include <vector>
+#include <string>
+using namespace std;
+
+class Solution {
+public:
+    vector<vector<int>> directions{{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
+    bool find(int row, int col, string &word, int idx, vector<vector<char>> board) {
+        if (idx == word.length()) return true; // Word matched completely
+        if (row < 0 || col < 0 || row >= board.size() || col >= board[0].size() || board[row][col] == '#' || board[row][col] != word[idx]) {
+            return false; 
+        }
+
+        // Mark the cell as visited
+        char temp = board[row][col];
+        board[row][col] = '#';
+
+        // Explore all four directions
+        for (auto &dir : directions) {
+            int newRow = row + dir[0];
+            int newCol = col + dir[1];
+            if (find(newRow, newCol, word, idx + 1, board)) return true;
+        }
+        board[row][col] = temp;
+
+        return false;
+    }
+
+    bool exist(vector<vector<char>>& board, string word) {
+        int m = board.size();
+        int n = board[0].size();
+
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                // Start DFS if the first character matches
+                if (board[i][j] == word[0] && find(i, j, word, 0, board)) {
+                    return true;
+                }
+            }
+        }
+        return false; // No valid path found
+    }
+};
