@@ -1,56 +1,40 @@
 class Solution {
-  private: 
-  // BFS function to explore all land connected to (row, col)
-    void bfs(int row, int col, vector<vector<int>>& vis, vector<vector<char>>& grid) {
-        vis[row][col] = 1;  // mark the starting cell as visited
-        queue<pair<int, int>> q;
-        q.push({row, col}); // start BFS from this cell
-        
-        int n = grid.size();    // number of rows
-        int m = grid[0].size(); // number of columns
-        
-        // Define directions for moving in 4 directions: up, down, left, right
-        int delRow[] = {-1, 1, 0, 0};
-        int delCol[] = {0, 0, -1, 1};
-        
-        // BFS loop
-        while (!q.empty()) {
-            int row = q.front().first;
-            int col = q.front().second;
-            q.pop();
-            
-            // Traverse the 4 possible directions (up, down, left, right)
-            for (int i = 0; i < 4; i++) {
-                int nrow = row + delRow[i];
-                int ncol = col + delCol[i];
-                
-                // Check if the neighbor is within bounds and is an unvisited land ('1')
-                if (nrow >= 0 && nrow < n && ncol >= 0 && ncol < m 
-                    && grid[nrow][ncol] == '1' && !vis[nrow][ncol]) {
-                    vis[nrow][ncol] = 1; // mark as visited
-                    q.push({nrow, ncol}); // add to the queue for further exploration
-                }
-            }
-        }
-    }
-  public:
-    // Function to find the number of islands.
+    int directions[4][2] = {{1, 0}, {-1, 0}, 
+                            {0, 1}, {0, -1}};
+public:
     int numIslands(vector<vector<char>>& grid) {
+        int ROWS = grid.size(), COLS = grid[0].size();
+        int islands = 0;
 
-        int n = grid.size();
-        int m = grid[0].size(); 
-        // create visited array and initialise to 0
-        vector<vector<int>> vis(n, vector<int>(m, 0)); 
-        int cnt = 0; 
-        for(int row = 0; row < n ; row++) {
-            for(int col = 0; col < m ;col++) {
-                // if not visited and is a land
-                if(!vis[row][col] && grid[row][col] == '1') {
-                    cnt++; 
-                    bfs(row, col, vis, grid); 
+        for (int r = 0; r < ROWS; r++) {
+            for (int c = 0; c < COLS; c++) {
+                if (grid[r][c] == '1') {
+                    bfs(grid, r, c);
+                    islands++;
                 }
             }
         }
-        return cnt; 
+
+        return islands;
+    }
+
+    void bfs(vector<vector<char>>& grid, int r, int c) {
+        queue<pair<int, int>> q;
+        grid[r][c] = '0';
+        q.push({r, c});
+
+        while (!q.empty()) {
+            auto node = q.front();q.pop();
+            int row = node.first, col = node.second;
+            for (int i = 0; i < 4; i++) {
+                int nr = row + directions[i][0];
+                int nc = col + directions[i][1];
+                if (nr >= 0 && nc >= 0 && nr < grid.size() && 
+                    nc < grid[0].size() && grid[nr][nc] == '1') {
+                    q.push({nr, nc});
+                    grid[nr][nc] = '0';
+                }
+            }
+        }
     }
 };
